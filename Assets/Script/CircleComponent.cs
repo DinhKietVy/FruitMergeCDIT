@@ -6,6 +6,8 @@ public class CircleComponent : MonoBehaviour
     [SerializeField]
     private Circle data;
 
+    public static event Action<Circle, Circle, Transform> OnCircleMerged;
+
     void Start()
     {
     }
@@ -24,7 +26,8 @@ public class CircleComponent : MonoBehaviour
             if(collision.gameObject.GetComponent<CircleComponent>().data.name == this.data.name)
             {
                 Destroy(gameObject);
-                GameManager.instance.Two_Circle_Merge(this.data, collision.gameObject.GetComponent<CircleComponent>().data, gameObject.transform);
+                //GameManager.instance.Two_Circle_Merge(this.data, collision.gameObject.GetComponent<CircleComponent>().data, gameObject.transform);
+                OnCircleMerged?.Invoke(this.data, collision.gameObject.GetComponent<CircleComponent>().data, gameObject.transform);
             }
         }
             

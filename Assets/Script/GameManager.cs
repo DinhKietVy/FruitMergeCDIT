@@ -18,6 +18,16 @@ public class GameManager : MonoBehaviour
         else Destroy(this);
     }
 
+    private void OnEnable()
+    {
+        CircleComponent.OnCircleMerged += Two_Circle_Merge;
+    }
+
+    private void OnDisable()
+    {
+        CircleComponent.OnCircleMerged -= Two_Circle_Merge;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,8 +64,6 @@ public class GameManager : MonoBehaviour
             
     }
 
-    void ResetFlag()
-    {
-        hasrun = false;
-    }
+    void ResetFlag() => hasrun = false;
+   
 }
