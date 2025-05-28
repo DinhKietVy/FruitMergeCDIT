@@ -6,12 +6,13 @@ using UnityEngine;
 public class Circle : ScriptableObject
 {
     [SerializeField]
-    public string name;
+    private string Name;
 
     [SerializeField]
     public Circle next_Circle;
 
     [SerializeField]
     public UnityEngine.Object next_circle;
+
 }
     

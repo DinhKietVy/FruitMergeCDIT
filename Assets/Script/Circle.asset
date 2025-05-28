@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f424cd909c37214e8d14504b6c2b4ce, type: 3}
   m_Name: Circle
   m_EditorClassIdentifier: 
-  name: afasf
+  Name: Circle0
   next_Circle: {fileID: 11400000, guid: 9b1ebd86433853d41bdc6ae8675d110e, type: 2}
   next_circle: {fileID: 4198220098095882300, guid: b6724626301b5a9439ef79e22508fbf2, type: 3}

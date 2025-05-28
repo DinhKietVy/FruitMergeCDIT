@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class MoveCircle : MonoBehaviour
 {
+    public static event Action Setup;
+
     private bool isDrop = false;
     private bool isDragging = false;
     private float yOffset;
@@ -28,6 +31,8 @@ public class MoveCircle : MonoBehaviour
             isDrop = true;
             gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
 
+            gameObject.transform.SetParent(GameObject.Find("Circles").transform);
+
             Invoke("Wait_To_Setup", 1.0f);
         }
 
@@ -40,6 +45,6 @@ public class MoveCircle : MonoBehaviour
 
     void Wait_To_Setup()
     {
-        GameManager.instance.Setup_New_Circle();
+        Setup?.Invoke();
     }
 }
