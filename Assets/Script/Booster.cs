@@ -5,8 +5,9 @@ public class Booster : MonoBehaviour
 {
     public static event Action boosTer1;
 
-    public void Booster1Clicked()
-    {
-        boosTer1?.Invoke();
-    }
+    public static event Action booster2;
+
+    public void Booster1Clicked() => boosTer1?.Invoke();
+
+    public void Booster2Clicked() => booster2?.Invoke();
 }

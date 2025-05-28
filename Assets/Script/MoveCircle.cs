@@ -11,10 +11,20 @@ public class MoveCircle : MonoBehaviour
     private Vector3 offset;
 
 
+    private void OnMouseDown()
+    {
+        if(GameManager.MouseState == mouseState.Choosing && isDrop)
+        {
+            GameManager.MouseState = mouseState.notChoosing;
+
+            Destroy(gameObject);
+
+        }
+    }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isDrop)
+        if (Input.GetMouseButtonDown(0) && !isDrop && GameManager.MouseState == mouseState.notChoosing)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
@@ -43,8 +53,5 @@ public class MoveCircle : MonoBehaviour
         }
     }
 
-    void Wait_To_Setup()
-    {
-        Setup?.Invoke();
-    }
+    void Wait_To_Setup() => Setup?.Invoke();
 }

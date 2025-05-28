@@ -2,9 +2,17 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum mouseState
+{
+    notChoosing,
+    Choosing,
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    public static mouseState MouseState = mouseState.notChoosing;
 
     [SerializeField]
     private UnityEngine.Object[] Circles;
@@ -25,6 +33,7 @@ public class GameManager : MonoBehaviour
         CircleComponent.OnCircleMerged += Two_Circle_Merge;
         MoveCircle.Setup += Setup_New_Circle;
         Booster.boosTer1 += Destroy_Smallest;
+        Booster.booster2 += ChangeMouseState;
     }
 
     private void OnDisable()
@@ -32,10 +41,12 @@ public class GameManager : MonoBehaviour
         CircleComponent.OnCircleMerged -= Two_Circle_Merge;
         MoveCircle.Setup -= Setup_New_Circle;
         Booster.boosTer1 -= Destroy_Smallest;
+        Booster.booster2 -= ChangeMouseState;
     }
 
     void Start()
     {
+        MouseState = mouseState.notChoosing;
         Setup_New_Circle();
     }
 
@@ -66,7 +77,7 @@ public class GameManager : MonoBehaviour
             
     }
 
-    void ResetFlag() => hasrun = false;
+    
 
     private UnityEngine.Object Find_Smallest_Fruit()
     {
@@ -100,4 +111,6 @@ public class GameManager : MonoBehaviour
         Destroy(Find_Smallest_Fruit().GameObject());
     }
 
+    void ResetFlag() => hasrun = false;
+    private void ChangeMouseState() => MouseState = mouseState.Choosing;
 }

@@ -15,4 +15,3 @@ public class Circle : ScriptableObject
     public UnityEngine.Object next_circle;
 
 }
-    
