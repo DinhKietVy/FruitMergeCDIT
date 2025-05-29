@@ -5,14 +5,17 @@ using UnityEngine;
 public enum mouseState
 {
     notChoosing,
-    Choosing,
+    DestroyChoosing,
+    UpgradeChoosing,
 }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public static mouseState MouseState = mouseState.notChoosing;
+    public static event Action MouseNotChoosing;
+
+    public static mouseState MouseState { get; private set; } = mouseState.notChoosing;
 
     [SerializeField]
     private UnityEngine.Object[] Circles;
@@ -28,12 +31,19 @@ public class GameManager : MonoBehaviour
         else Destroy(this);
     }
 
+    public static void TriggerMouseNotChoosing()
+    {
+        MouseNotChoosing?.Invoke();
+    }
+
     private void OnEnable()
     {
         CircleComponent.OnCircleMerged += Two_Circle_Merge;
         MoveCircle.Setup += Setup_New_Circle;
         Booster.boosTer1 += Destroy_Smallest;
-        Booster.booster2 += ChangeMouseState;
+        Booster.booster2 += ChangeDestroyMouseState;
+        Booster.booster3 += ChangeUpgradeMouseState;
+        MouseNotChoosing += ChangeNotChoosingMouseState;
     }
 
     private void OnDisable()
@@ -41,7 +51,9 @@ public class GameManager : MonoBehaviour
         CircleComponent.OnCircleMerged -= Two_Circle_Merge;
         MoveCircle.Setup -= Setup_New_Circle;
         Booster.boosTer1 -= Destroy_Smallest;
-        Booster.booster2 -= ChangeMouseState;
+        Booster.booster2 -= ChangeDestroyMouseState;
+        Booster.booster3 -= ChangeUpgradeMouseState;
+        MouseNotChoosing -= ChangeNotChoosingMouseState;
     }
 
     void Start()
@@ -112,5 +124,9 @@ public class GameManager : MonoBehaviour
     }
 
     void ResetFlag() => hasrun = false;
-    private void ChangeMouseState() => MouseState = mouseState.Choosing;
+
+    private void ChangeNotChoosingMouseState() => MouseState = mouseState.notChoosing;
+    private void ChangeDestroyMouseState() => MouseState = mouseState.DestroyChoosing;
+
+    private void ChangeUpgradeMouseState() => MouseState = mouseState.UpgradeChoosing;
 }

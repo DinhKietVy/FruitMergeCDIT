@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoveCircle : MonoBehaviour
@@ -10,14 +11,24 @@ public class MoveCircle : MonoBehaviour
     private float yOffset;
     private Vector3 offset;
 
+    private void OnEnable()
+    {
+        CircleComponent.AfterUpgrade += SetupInstiate;
+    }
+
 
     private void OnMouseDown()
     {
-        if(GameManager.MouseState == mouseState.Choosing && isDrop)
+        if(GameManager.MouseState == mouseState.DestroyChoosing && isDrop)
         {
-            GameManager.MouseState = mouseState.notChoosing;
+            FinishBosster();
 
-            Destroy(gameObject);
+        }
+        else if(GameManager.MouseState == mouseState.UpgradeChoosing && isDrop)
+        {
+            gameObject.GetComponent<CircleComponent>()?.OnUpgrade?.Invoke();
+
+            FinishBosster();
 
         }
     }
@@ -35,7 +46,7 @@ public class MoveCircle : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && isDragging)
+        if (Input.GetMouseButtonUp(0) && isDragging && !isDrop)
         {
             isDragging = false;
             isDrop = true;
@@ -51,6 +62,19 @@ public class MoveCircle : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = mousePos + offset;
         }
+    }
+
+    private void SetupInstiate(UnityEngine.Object circle)
+    {
+        circle.GetComponent<MoveCircle>().isDrop = true;
+        circle.GetComponent<MoveCircle>().isDragging = false;
+    }
+
+    private void FinishBosster()
+    {
+        GameManager.TriggerMouseNotChoosing();
+
+        Destroy(gameObject);
     }
 
     void Wait_To_Setup() => Setup?.Invoke();
