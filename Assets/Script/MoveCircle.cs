@@ -60,7 +60,10 @@ public class MoveCircle : MonoBehaviour
         if (isDragging)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = mousePos + offset;
+            float newX = mousePos.x + offset.x;
+            float fixedY = transform.position.y;
+            float newZ = transform.position.z;
+            transform.position = new Vector3(newX, fixedY, newZ);
         }
     }
 
