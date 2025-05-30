@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -60,7 +61,7 @@ public class MoveCircle : MonoBehaviour
         if (isDragging)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float newX = mousePos.x + offset.x;
+            float newX = Mathf.Clamp( mousePos.x + offset.x, -1.5f,1.5f);
             float fixedY = transform.position.y;
             float newZ = transform.position.z;
             transform.position = new Vector3(newX, fixedY, newZ);
